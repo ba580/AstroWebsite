@@ -5,7 +5,6 @@ import Header from "../components/header";
 import "./globals.css";
 import TrustedServers from "@/components/servers";
 import Example from "@/components/team";
-
 export default function Home() {
   return (
     <div className="overflow-auto flex flex-col min-h-screen bg-gradient-to-b from-gray-900 to-black text-white font-sans">
