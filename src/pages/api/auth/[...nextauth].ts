@@ -53,7 +53,7 @@ export const authOptions = {
       }
       if (profile) {
         token.profile = profile;
-        token.userId = profile.id; // Include the userId in the token
+        token.userId = profile.id; 
       }
       return token;
     },
@@ -62,6 +62,14 @@ export const authOptions = {
       session.accessToken = token.accessToken;
       session.tokenType = token.tokenType;
       session.discordUser = token.profile;
+
+      if (token.profile?.id) {
+        session.user.id = token.profile.id;
+        session.user.name = token.profile.username;
+        session.user.email = token.profile.email;
+        session.user.image = token.profile.image_url;
+      }
+
       return session;
     },
   },

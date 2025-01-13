@@ -7,7 +7,7 @@ import TrustedServers from "@/components/servers";
 import Example from "@/components/team";
 export default function Home() {
   return (
-    <div className="overflow-auto flex flex-col min-h-screen bg-gradient-to-b from-gray-900 to-black text-white font-sans">
+    <div className="dark overflow-auto flex flex-col min-h-screen bg-gradient-to-b from-gray-900 to-black text-white font-sans">
       <Header />
       <main className="relative flex-grow md:mt-16 sm:mb-72">
         <div className="flex flex-col items-center justify-center h-screen px-4 sm:scale-90 md:scale-100 mt-28 md:mt-0">
