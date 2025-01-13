@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "../sidebar";
+import  AppSidebar  from "../sidebar";
 
 export default function Dashboard() {
   const router = useRouter();
