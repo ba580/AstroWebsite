@@ -53,7 +53,7 @@ const items = [
   },
 ];
 
-export function AppSidebar({}: any) {
+export default function AppSidebar({}: any) {
   const [selectedServer, setSelectedServer] = useState<string | null>(null);
   const [mutualServers, setMutualServers] = useState<any[]>([]);
   const { data: session } = useSession();
