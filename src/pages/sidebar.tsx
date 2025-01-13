@@ -1,6 +1,7 @@
 import { Home, Puzzle } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import {
   Sidebar,
   SidebarContent,
@@ -103,6 +104,7 @@ export default function AppSidebar({}: any) {
   ));
 
   return (
+    <SidebarProvider>
     <Sidebar className="dark text-gray-200">
       <SidebarContent>
         <div className="relative">
@@ -167,5 +169,6 @@ export default function AppSidebar({}: any) {
         </div>
       </SidebarContent>
     </Sidebar>
+    </SidebarProvider>
   );
 }
