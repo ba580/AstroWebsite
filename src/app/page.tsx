@@ -1,5 +1,4 @@
 "use client";
-import TypeIt from "typeit-react";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import "./globals.css";
@@ -18,9 +17,7 @@ export default function Home() {
           />
           <section className="text-center">
             <h2 className="text-5xl font-bold text-gray-100">
-              <TypeIt>
                 <span className="text-indigo-400">Imagine</span> a bot...
-              </TypeIt>
             </h2>
             <p className="mt-4 text-lg text-gray-300">
               Where staff management is a{" "}
