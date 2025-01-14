@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { Search } from 'lucide-react';
-import { useRouter } from 'next/router';
+import * as React from "react";
+import { Search } from "lucide-react";
+import { useRouter } from "next/router";
 import {
   Table,
   TableBody,
@@ -10,15 +10,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import Header from "@/components/header";
 
 export default function InfractionManager() {
-  const [search, setSearch] = React.useState('');
+  const [search, setSearch] = React.useState("");
   const router = useRouter();
   const { data: session, status } = useSession();
   const [guild, setGuild] = useState<any | null>(null);
@@ -28,8 +31,8 @@ export default function InfractionManager() {
   const { id } = router.query;
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/');
+    if (status === "unauthenticated") {
+      router.push("/");
     }
 
     const fetchAllData = async () => {
@@ -41,8 +44,10 @@ export default function InfractionManager() {
           fetch(`/api/infractions/${id}`),
         ]);
 
-        if (!guildRes.ok) throw new Error(`Guild fetch failed: ${guildRes.status}`);
-        if (!infractionsRes.ok) throw new Error(`Infractions fetch failed: ${infractionsRes.status}`);
+        if (!guildRes.ok)
+          throw new Error(`Guild fetch failed: ${guildRes.status}`);
+        if (!infractionsRes.ok)
+          throw new Error(`Infractions fetch failed: ${infractionsRes.status}`);
 
         const guildData = await guildRes.json();
         const infractionsData = await infractionsRes.json();
@@ -50,8 +55,8 @@ export default function InfractionManager() {
         setGuild(guildData.mutualGuilds[0]);
         setInfractions(infractionsData);
       } catch (error: any) {
-        console.error('Error fetching data:', error);
-        setError(error.message || 'An unexpected error occurred.');
+        console.error("Error fetching data:", error);
+        setError(error.message || "An unexpected error occurred.");
       } finally {
         setLoading(false);
       }
@@ -64,9 +69,14 @@ export default function InfractionManager() {
 
   const filteredInfractions = infractions.filter((infraction: any) => {
     if (!search) return true;
-    return ['id', 'user.id', 'reason']
-      .map((key) => key.split('.').reduce((acc, curr) => acc?.[curr], infraction))
-      .some((field) => field && field.toString().toLowerCase().includes(search.toLowerCase()));
+    return ["id", "user.id", "reason"]
+      .map((key) =>
+        key.split(".").reduce((acc, curr) => acc?.[curr], infraction)
+      )
+      .some(
+        (field) =>
+          field && field.toString().toLowerCase().includes(search.toLowerCase())
+      );
   });
 
   if (loading) {
@@ -120,7 +130,11 @@ export default function InfractionManager() {
 
   return (
     <div className="dark min-h-screen bg-gradient-to-b from-gray-900 to-black text-white overflow-y-auto">
-      <div className="p-4 space-y-4">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <Header />
+      </div>
+
+      <div className="p-4 space-y-4 mt-20">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -147,12 +161,18 @@ export default function InfractionManager() {
                 <TableRow
                   key={infraction.id}
                   className="cursor-pointer hover:bg-muted/50"
-                  onClick={() => router.push(`/panel/infraction/${id}/${infraction.id}`)}
+                  onClick={() =>
+                    router.push(`/panel/infraction/${id}/${infraction.id}`)
+                  }
                 >
                   <TableCell className="font-mono">
                     <div className="flex items-center gap-2">
                       <Badge
-                        variant={infraction.status === 'active' ? 'destructive' : 'secondary'}
+                        variant={
+                          infraction.status === "active"
+                            ? "destructive"
+                            : "secondary"
+                        }
                         className="h-2 w-2 rounded-full p-0"
                       />
                       {infraction.id}
@@ -164,10 +184,14 @@ export default function InfractionManager() {
                         <AvatarImage src={infraction.user.avatar} />
                         <AvatarFallback>U</AvatarFallback>
                       </Avatar>
-                      <span className="font-mono text-sm">{infraction.user.id}</span>
+                      <span className="font-mono text-sm">
+                        {infraction.user.id}
+                      </span>
                     </div>
                   </TableCell>
-                  <TableCell className="break-words whitespace-normal">{infraction.action.details}</TableCell>
+                  <TableCell className="break-words whitespace-normal">
+                    {infraction.action.details}
+                  </TableCell>
                   <TableCell className="text-center">
                     <div className="flex items-center gap-2 justify-center">
                       <Avatar className="h-6 w-6">
@@ -175,7 +199,9 @@ export default function InfractionManager() {
                         <AvatarFallback>A</AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col items-start">
-                        <span className="text-sm">{infraction.author.name}</span>
+                        <span className="text-sm">
+                          {infraction.author.name}
+                        </span>
                         <span className="text-xs text-muted-foreground">
                           {infraction.author.id}
                         </span>
@@ -184,7 +210,9 @@ export default function InfractionManager() {
                   </TableCell>
                   <TableCell className="text-center">
                     <div className="flex flex-col items-center">
-                    <span  className="text-xs text-muted-foreground">{new Date(infraction.created).toLocaleString()}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(infraction.created).toLocaleString()}
+                      </span>
                     </div>
                   </TableCell>
                 </TableRow>
