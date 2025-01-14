@@ -13,7 +13,35 @@ const redisClient = createClient({
 
 await redisClient.connect();
 
-
+const fetchWithRetry = async (url: any, options = {}, retries = 3, delay = 1000) => {
+  let attempt = 0;
+  while (attempt < retries) {
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        if (response.status === 429) {
+          const retryAfter = response.headers.get("Retry-After");
+          const delayTime = retryAfter ? parseInt(retryAfter, 10) * 1 : delay;
+          console.warn(`Rate limited. Retrying in ${delayTime}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delayTime));
+          attempt++;
+          continue;
+        }
+        const errorMessage = await response.text();
+        console.error(`HTTP error! status: ${response.status} - ${errorMessage}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error: any) {
+      attempt++;
+      if (attempt >= retries) {
+        throw error;
+      }
+      console.warn(`Attempt ${attempt} failed: ${error.message}. Retrying in ${delay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+};
 
 export default async function handler(req: NextApiRequest & IncomingMessage & { cookies: NextApiRequestCookies; }, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);
@@ -30,25 +58,23 @@ export default async function handler(req: NextApiRequest & IncomingMessage & { 
     if (cachedData) {
       data = JSON.parse(cachedData);
     } else {
-      const guildsResponse = await fetch(`https://discord.com/api/users/@me/guilds`, {
+      const guilds = await fetchWithRetry(`https://discord.com/api/users/@me/guilds`, {
         headers: {
           Authorization: `Bearer ${session.accessToken}`,
         },
       });
-      const guilds = await guildsResponse.json();
 
-      const mutualGuilds = await fetch(`${process.env.API_URL}/mutual_servers?perm=staff`, {
+      const mutualGuilds = await fetchWithRetry(`${process.env.API_URL}/mutual_servers?perm=admin`, {
         method: "POST",
         body: JSON.stringify({
           user: session.user.id,
-          guilds: guilds.map((guild: { id: string; }) => guild.id),
+          guilds: guilds.map((guild: { id: any; }) => guild.id),
         }),
         headers: {
           "Content-Type": "application/json",
         },
       });
-      const mutualGuildsJson = await mutualGuilds.json();
-      
+
       data = { guilds, mutualGuilds };
       await redisClient.set(cacheKey, JSON.stringify(data), {
         EX: 1200,
@@ -60,5 +86,5 @@ export default async function handler(req: NextApiRequest & IncomingMessage & { 
     return res.status(500).json({ message: "Internal Server Error" });
   }
 
-  res.status(200).json(data.mutualGuildsJson);
+  res.status(200).json(data.mutualGuilds);
 }
