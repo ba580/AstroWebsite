@@ -85,6 +85,21 @@ const Header = () => {
                         </button>
                       )}
                     </Menu.Item>
+
+                  <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          href="/servers"
+                          className={`${
+                            active
+                              ? "bg-gray-800 text-white"
+                              : "text-gray-300"
+                          } group flex w-full items-center rounded-md px-4 py-2 text-sm`}
+                        >
+                          Servers
+                        </Link>
+                      )}
+                    </Menu.Item>
                   </div>
                 </Menu.Items>
               </Transition>

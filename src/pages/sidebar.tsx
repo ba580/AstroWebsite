@@ -105,70 +105,70 @@ export default function AppSidebar({}: any) {
 
   return (
     <SidebarProvider>
-    <Sidebar className="dark text-gray-200">
-      <SidebarContent>
-        <div className="relative">
-          <div
-            className="w-full h-40 bg-cover bg-center rounded-t-lg"
-            style={{ backgroundImage: `url(${bannerUrl})` }}
-          />
-        </div>
-
-        <SidebarGroup>
-          <Select
-            value={selectedServer || ""}
-            onValueChange={handleSelectChange}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select a server" />
-            </SelectTrigger>
-            <SelectContent className="dark">{serverOptions}</SelectContent>
-          </Select>
-
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-
-                  {item.subItems && (
-                    <SidebarMenuSub>
-                      {item.subItems.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
-                            <a href={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </a>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  )}
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <div className="mt-auto p-4 border-t border-gray-700">
-          <div className="flex items-center space-x-3">
-            <img
-              className="w-10 h-10 rounded-full"
-              src={session?.user?.image || "/default.png"}
-              alt="User Avatar"
+      <Sidebar className="dark text-gray-200">
+        <SidebarContent>
+          <div className="relative">
+            <div
+              className="w-full h-40 bg-cover bg-center rounded-t-lg"
+              style={{ backgroundImage: `url(${bannerUrl})` }}
             />
-            <div>
-              <p className="text-sm font-medium">{session?.user?.name}</p>
-              <p className="text-xs text-gray-400">Administrator</p>
+          </div>
+
+          <SidebarGroup>
+            <Select
+              value={selectedServer || ""}
+              onValueChange={handleSelectChange}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select a server" />
+              </SelectTrigger>
+              <SelectContent className="dark">{serverOptions}</SelectContent>
+            </Select>
+
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <a href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </a>
+                    </SidebarMenuButton>
+
+                    {item.subItems && (
+                      <SidebarMenuSub>
+                        {item.subItems.map((subItem) => (
+                          <SidebarMenuSubItem key={subItem.title}>
+                            <SidebarMenuSubButton asChild>
+                              <a href={subItem.url}>
+                                <span>{subItem.title}</span>
+                              </a>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    )}
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+          <div className="mt-auto p-4 border-t border-gray-700">
+            <div className="flex items-center space-x-3">
+              <img
+                className="w-10 h-10 rounded-full"
+                src={session?.user?.image || "/default.png"}
+                alt="User Avatar"
+              />
+              <div>
+                <p className="text-sm font-medium">{session?.user?.name}</p>
+                <p className="text-xs text-gray-400">Administrator</p>
+              </div>
             </div>
           </div>
-        </div>
-      </SidebarContent>
-    </Sidebar>
+        </SidebarContent>
+      </Sidebar>
     </SidebarProvider>
   );
 }

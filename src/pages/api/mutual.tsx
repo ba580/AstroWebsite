@@ -21,7 +21,7 @@ const fetchWithRetry = async (url: any, options = {}, retries = 3, delay = 1000)
       if (!response.ok) {
         if (response.status === 429) {
           const retryAfter = response.headers.get("Retry-After");
-          const delayTime = retryAfter ? parseInt(retryAfter, 10) * 1 : delay;
+          const delayTime = retryAfter ? parseInt(retryAfter, 10) * 9.5 : delay;
           console.warn(`Rate limited. Retrying in ${delayTime}ms...`);
           await new Promise(resolve => setTimeout(resolve, delayTime));
           attempt++;
@@ -64,7 +64,7 @@ export default async function handler(req: NextApiRequest & IncomingMessage & { 
         },
       });
 
-      const mutualGuilds = await fetchWithRetry(`${process.env.API_URL}/mutual_servers?perm=admin`, {
+      const mutualGuilds = await fetchWithRetry(`${process.env.API_URL}/mutual_servers?perm=staff`, {
         method: "POST",
         body: JSON.stringify({
           user: session.user.id,

@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/pages/api/discord/index.js", "src/pages/api/data/[guildid]"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/pages/api/discord/index.js", "src/pages/api/data/[guildid]", "src/pages/panel/infraction/[id]"],
   "exclude": ["node_modules"]
 }

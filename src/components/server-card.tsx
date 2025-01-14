@@ -36,8 +36,8 @@ export default function ServerCard({ name, iconUrl, role, id}: ServerCardProps) 
           </div>
         </CardContent>
         <CardFooter>
-          <Button className="w-full bg-stone-900 glassmorphism text-white" onClick={() => router.push(`/dashboard/${id}`)}>
-            Dashboard
+          <Button className="w-full bg-stone-900 glassmorphism text-white" onClick={() => router.push(`/panel/${id}`)}>
+            Admin Panel [Beta]
           </Button>
         </CardFooter>
       </Card>
