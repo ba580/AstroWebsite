@@ -64,7 +64,7 @@ export default async function handler(req: NextApiRequest & IncomingMessage & { 
         },
       });
 
-      const mutualGuilds = await fetchWithRetry(`${process.env.API_URL}/mutual_servers?perm=staff`, {
+      const mutualGuilds = await fetchWithRetry(`${process.env.API_URL}/mutual_servers?auth=${process.env.API_AUTH}&perm=staff`, {
         method: "POST",
         body: JSON.stringify({
           user: session.user.id,
