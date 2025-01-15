@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const Mutual = await fetch(
-      `${process.env.API_URL}/mutual_servers?perm=admin`,
+      `${process.env.API_URL}/mutual_servers?auth=${process.env.API_AUTH}&perm=admin`,
       {
         method: "POST",
         body: JSON.stringify({ user: session.user.id, guilds: [req.query.id] }),
